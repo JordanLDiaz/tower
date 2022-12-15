@@ -17,12 +17,12 @@ class EventsService {
     return event
   }
 
-  async editEvent(eventId, eventData) {
+  async editEvent(eventId, eventData, userId) {
     const event = await dbContext.Events.findById(eventId)
     if (event.isCanceled) throw new BadRequest('Cannot edit a canceled event')
     if (!event) throw new BadRequest(`No event at this id: ${eventId}`)
     // @ts-ignore
-    if (event.creatorId.toString != userId) throw new Forbidden("Cannot edit event that you did not create")
+    if (event.creatorId != userId) throw new Forbidden("Cannot edit event that you did not create")
     event.name = eventData.name ? eventData.name : event.name
     event.description = eventData.description ? eventData.description : event.description
     event.coverImg = eventData.coverImg ? eventData.coverImg : event.coverImg

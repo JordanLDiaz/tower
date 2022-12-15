@@ -8,6 +8,7 @@
   <footer class="bg-dark text-light">
     Made with 💖 by CodeWorks
   </footer>
+  <CreateEventModal id="eventModal" />
 </template>
 
 <script>

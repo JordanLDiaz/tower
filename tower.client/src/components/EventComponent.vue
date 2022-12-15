@@ -1,15 +1,15 @@
 <template>
-  <div class="eventImg-card elevation-5 m-3">
-    <img
-      src="https://images.unsplash.com/photo-1493225774800-a08bb7034783?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y29uY2VydHxlbnwwfDJ8MHx8&auto=format&fit=crop&w=500&q=60"
-      alt="" class="img-fluid">
-    <div class="text-center">
-      <div>event.name</div>
-      <div>event.location</div>
-      <div>event.startDate</div>
-      <div>event.capacity</div>
+  <router-link :to="{ name: 'Event', params: { eventId: event.id } }">
+    <div class="eventImg-card elevation-5 m-3">
+      <img :src="event.coverImg" alt="" class="img-fluid selectable">
+      <div class="text-center">
+        <div class="text-light">{{ event.name }}</div>
+        <div class="text-white">{{ event.location }}</div>
+        <div class="text-white">{{ new Date(event.startDate).toLocaleDateString(`en-US`) }}</div>
+        <div class="text-white"><span class="text-primary">{{ event.capacity }}</span> spots left </div>
+      </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 
@@ -32,6 +32,6 @@ export default {
 
 <style lang="scss" scoped>
 .eventImg-card {
-  border: 3pt solid #FFD464;
+  border: 2pt solid #FFD464;
 }
 </style>
