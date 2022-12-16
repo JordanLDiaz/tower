@@ -6,9 +6,10 @@
     <router-view />
   </main>
   <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
+    Made with 💖 by Jordan
   </footer>
   <CreateEventModal id="eventModal" />
+  <UpdateEventModal id="updateEventModal" />
 </template>
 
 <script>

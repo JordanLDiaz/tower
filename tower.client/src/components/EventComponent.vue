@@ -6,7 +6,11 @@
         <div class="text-light">{{ event.name }}</div>
         <div class="text-white">{{ event.location }}</div>
         <div class="text-white">{{ new Date(event.startDate).toLocaleDateString(`en-US`) }}</div>
-        <div class="text-white"><span class="text-primary">{{ event.capacity }}</span> spots left </div>
+        <div v-if="event?.isCanceled" class="text-dark bg-danger">Event Canceled</div>
+        <div v-if="event?.capacity == 0" class="text-dark bg-danger">Event Full</div>
+        <div v-else-if="event?.capacity > 0 && !event?.isCanceled" class="text-white"><span class="text-primary">{{
+            event.capacity
+        }}</span> spots left </div>
       </div>
     </div>
   </router-link>
