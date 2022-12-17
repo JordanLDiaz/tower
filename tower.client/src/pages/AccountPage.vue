@@ -7,14 +7,14 @@
       </div>
     </div>
     <div class="row m-5">
-      <!-- <div v-for="e in events" class="col-12 col-md-3">
-          <EventComponent :event="e" />
-        </div> -->
+      <div v-for="m in myTickets" class="col-12 col-md-3">
+        <MyTicket :event="m.event" />
+      </div>
     </div>
   </section>
 
   <!-- SECTION My Event Tickets -->
-  <section class="container-fluid">
+  <!-- <section class="container-fluid">
     <div class="row m-5">
       <div class="col-12">
         <h3 class="text-success">My Upcoming Events</h3>
@@ -25,7 +25,7 @@
         <img src="https://thiscatdoesnotexist.com" alt="" class="img-fluid">
       </div>
     </div>
-  </section>
+  </section> -->
 </template>
 
 <script>
@@ -34,25 +34,34 @@ import { AppState } from '../AppState'
 import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { eventsService } from "../services/EventsService.js";
+import { useRoute } from "vue-router";
+import { accountService } from "../services/AccountService.js";
 
 export default {
-  setup() {
+  // props: {
+  //   event: { type: Object, required: true }
+  // },
 
-    // async function getEvents() {
-    //   try {
-    //     await eventsService.getAllEvents();
-    //   } catch (error) {
-    //     logger.error(error)
-    //     Pop.error(error)
-    //   }
-    // }
+  setup() {
+    const route = useRoute();
+
+    async function getMyTickets() {
+      try {
+        await accountService.getMyTickets();
+      } catch (error) {
+        logger.error(error)
+        Pop.error(error)
+      }
+    }
 
     onMounted(() => {
-      // getEvents();
+      getMyTickets();
     })
     return {
-      // event: computed(() => AppState.events),
-      account: computed(() => AppState.account)
+      route,
+      events: computed(() => AppState.events),
+      account: computed(() => AppState.account),
+      myTickets: computed(() => AppState.myTickets)
     }
   }
 }

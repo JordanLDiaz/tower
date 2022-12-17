@@ -8,8 +8,9 @@
   <footer class="bg-dark text-light">
     Made with 💖 by Jordan
   </footer>
-  <CreateEventModal id="eventModal" />
-  <UpdateEventModal id="updateEventModal" />
+  <ModalComponent id="eventModal">
+    <CreateEventModal />
+  </ModalComponent>
 </template>
 
 <script>

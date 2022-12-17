@@ -17,10 +17,8 @@ class CommentsService {
 
     // const event = await eventsService.getEventById(comment.eventId)
     // if (!comment) throw new BadRequest(`No comment at id: ${commentId}`)
-    // if (comment.creatorId.toString != userId) throw new Forbidden("You cannot remove other users' comments")
-
-    await comment.remove()
-    await comment.save()
+    if (comment.creatorId != userId) throw new Forbidden("You cannot remove other users' comments")
+    comment.remove()
     return comment
   }
 

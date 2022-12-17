@@ -34,6 +34,7 @@
 <script>
 import { onMounted, computed, ref } from "vue";
 import { AppState } from "../AppState.js";
+import EventComponent from "../components/EventComponent.vue";
 import { eventsService } from "../services/EventsService.js"
 import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
@@ -41,42 +42,34 @@ import Pop from "../utils/Pop.js";
 export default {
   setup() {
     const filterBy = ref("");
-
     async function getEvents() {
       try {
         await eventsService.getAllEvents();
-      } catch (error) {
-        logger.error(error)
-        Pop.error(error)
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.error(error);
       }
     }
-
     onMounted(() => {
       getEvents();
     });
-
     return {
       filterBy,
       events: computed(() => {
         if (filterBy.value == "") {
           return AppState.events;
-        } else {
+        }
+        else {
           return AppState.events.filter(e => e.type == filterBy.value);
         }
       })
     };
-  }
+  },
+  components: { EventComponent }
 }
 </script>
 
 <style scoped lang="scss">
-// #hero-img {
-//   width: 100%;
-//   height: 20vh;
-//   background-image: url(https://images.unsplash.com/photo-1607499699372-7bb722dff7e2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fGJhY2tncm91bmR8ZW58MHwwfDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60);
-//   background-position: center;
-//   background-size: cover;
-//   border: 2pt solid #56C7FB;
-//   background-repeat: no-repeat;
-// }
+
 </style>

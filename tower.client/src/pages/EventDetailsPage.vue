@@ -26,26 +26,24 @@
             </h5>
           </div>
           <div class="col-3">
-            <button v-if="event?.capacity == 0" class="m-1 btn btn-primary bg-primary">Event Full</button>
-            <button v-if="event?.isCanceled" class="m-1 btn btn-success bg-success">Event Canceled</button>
+            <button v-if="event?.capacity == 0" class="fs-5 m-1 btn btn-primary bg-primary text-dark" disabled>Event
+              Full</button>
+            <button v-if="event?.isCanceled" class="m-1 btn btn-success bg-success text-dark" disabled>Event
+              Canceled</button>
             <button v-if="event?.capacity > 0 && !event.isCanceled && account.id && !foundMe" @click="createTicket()"
               class="m-1 btn btn-warning bg-warning"> Attend <span class="mdi mdi-human"></span>
             </button>
-            <button v-else-if="account.id" @click="removeTicket(foundMe.id)" class="m-1 btn btn-danger bg-danger"><span
-                class="mdi mdi-account-cancel"> Unattend</span>
+            <button v-else-if="account.id && foundMe" @click="removeTicket(foundMe.id)"
+              class="m-1 btn btn-danger bg-danger"><span class="mdi mdi-account-cancel"> Unattend</span>
             </button>
           </div>
           <div class="col-4">
-            <button v-if="account.id && !event?.isCanceled" class="btn btn-success bg-success p-2"
+            <button v-if="account.id == event?.creatorId && !event?.isCanceled" class="btn btn-success bg-success p-2"
               data-bs-toggle="modal" data-bs-target="#updateEventModal"><i class="mdi mdi-pen"> Update Event
                 Details</i></button>
-            <!-- <button class="btn btn-danger bg-danger">
-              <i class="mdi mdi-cancel bg-danger" v-if="event?.creator.id == account.id && !event?.isCanceled"
-                @click="archiveEvent(eventId)"></i>
-            </button> -->
           </div>
           <div class="col-3">
-            <button v-if="account.id && !event?.isCanceled" class="btn btn-danger bg-danger p-2"
+            <button v-if="account.id == event?.creatorId && !event?.isCanceled" class="btn btn-danger bg-danger p-2"
               @click="archiveEvent(event.id)"><span class="mdi mdi-cancel"> Cancel Event</span></button>
           </div>
         </div>
@@ -56,11 +54,12 @@
   <!-- SECTION Who is attending -->
   <section class="container-fluid">
     <div class="row m-3 mt-3">
-      <h5 class="text-dark-lighten">See who is attending</h5>
+      <h5 class="text-primary">See who is attending</h5>
     </div>
     <div class="row attendee-card elevation-5 m-3 my-3 p-5 bg-dark-lighten rounded">
       <div class="col-12">
-        {{ attendees }}
+        <img v-for="a in attendees" :key="a.id" :src="a.profile?.picture" :title="a.profile?.name" alt=""
+          class="img-fluid p-2">
       </div>
     </div>
   </section>
@@ -68,16 +67,20 @@
   <!-- SECTION Comments -->
   <section class="container">
     <div class="row">
-      <h5 class="text-dark-lighten">What are people saying</h5>
+      <h5 class="text-primary">What are people saying</h5>
     </div>
     <div class="row comment-card elevation-5 m-2 p-3 bg-dark-lighten rounded">
       <div class="row">
         <h5 class="text-success"> Join the conversation </h5>
-        <form>
+        <form @submit.prevent="createComment()">
           <div class="form-group ">
             <label for="commentField"></label>
-            <textarea class="form-control" id="commentField" rows="4">Tell the people...</textarea>
-            <button class="mt-3 btn btn-success bg-success">Post comment</button>
+            <textarea type="text" class="form-control" id="commentField" rows="4" required
+              v-model="editable.body">Tell the people...</textarea>
+          </div>
+          <div>
+            <button type="submit" class="mt-3 btn btn-success bg-success">Post
+              comment</button>
           </div>
         </form>
       </div>
@@ -89,6 +92,9 @@
       </div>
     </div>
   </section>
+  <ModalComponent id="updateEventModal">
+    <UpdateEventModal />
+  </ModalComponent>
 </template>
 
 
@@ -104,10 +110,12 @@ import { useRoute } from "vue-router";
 
 export default {
   // props: {
-  //   event: { type: Object, required: true }
+  //   event: { type: Object, required: true },
+  //   comment: { type: Object, required: true }
   // },
 
   setup() {
+    const editable = ref({});
     const route = useRoute();
     async function getEventById() {
       try {
@@ -142,6 +150,7 @@ export default {
     })
 
     return {
+      editable,
       event: computed(() => AppState.activeEvent),
       comments: computed(() => AppState.comments),
       attendees: computed(() => AppState.attendees),
@@ -176,6 +185,18 @@ export default {
             await eventsService.archiveEvent(eventId)
             Pop.success('Event has been canceled')
           }
+        } catch (error) {
+          logger.error(error)
+          Pop.error(error.message)
+        }
+      },
+
+      async createComment() {
+        try {
+          editable.value.eventId = route.params.eventId
+          await commentsService.createComment(editable.value)
+          editable.value = {}
+          Pop.toast('Created comment', "success")
         } catch (error) {
           logger.error(error)
           Pop.error(error.message)
