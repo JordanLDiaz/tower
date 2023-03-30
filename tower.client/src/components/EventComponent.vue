@@ -9,7 +9,7 @@
         <div v-if="event?.isCanceled" class="text-dark bg-danger fw-bold">Event Canceled</div>
         <div v-if="event?.capacity == 0" class="text-dark bg-danger fw-bold">Event Full</div>
         <div v-else-if="event?.capacity > 0 && !event?.isCanceled" class="text-white"><span class="text-primary">{{
-            event.capacity
+          event.capacity
         }}</span> spots left </div>
       </div>
     </div>
@@ -37,5 +37,7 @@ export default {
 <style lang="scss" scoped>
 .eventImg-card {
   border: 2pt solid #FFD464;
+  max-height: 32vh;
+  min-height: 32vh;
 }
 </style>

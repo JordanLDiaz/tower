@@ -7,13 +7,13 @@ class EventsService {
     await event.populate('creator')
     return event
   }
-  async getAllEvents(page) {
+  async getAllEvents() {
     const events = await dbContext.Events.find().populate('creator')
     return events
   }
-  async getEventById(id) {
-    const event = await dbContext.Events.findById(id).populate('creator')
-    if (!event) throw new BadRequest(`No event by id: ${id}`)
+  async getEventById(eventId) {
+    const event = await dbContext.Events.findById(eventId)
+    if (!event) throw new BadRequest(`No event by id: ${eventId}`)
     return event
   }
 
@@ -38,12 +38,10 @@ class EventsService {
     // @ts-ignore
     // NOTE tostring changes object to string so matches userId and is able to be compared w/it
     if (event.creatorId.toString() != userId) throw new Forbidden('This is not your event to archive')
-    // if (event.isCanceled) throw new BadRequest(`No event at this id: ${eventId}`)
-    event.isCanceled = true
+    event.isCanceled = !event.isCanceled
     await event.save()
     return `Canceled ${event.name}`
   }
-
 }
 
 export const eventsService = new EventsService

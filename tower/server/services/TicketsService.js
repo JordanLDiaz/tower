@@ -14,7 +14,7 @@ class TicketsService {
     if (event.capacity == 0) throw new BadRequest('No more tickets remaining')
     const ticket = await dbContext.Tickets.create(body)
     // @ts-ignore
-    event.capacity -= 1
+    event.capacity--
     await event.save()
     await ticket.populate('profile event')
     return ticket

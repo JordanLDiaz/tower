@@ -34,16 +34,11 @@ import { AppState } from '../AppState'
 import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { eventsService } from "../services/EventsService.js";
-import { useRoute } from "vue-router";
 import { accountService } from "../services/AccountService.js";
 
 export default {
-  // props: {
-  //   event: { type: Object, required: true }
-  // },
 
   setup() {
-    const route = useRoute();
 
     async function getMyTickets() {
       try {
@@ -58,7 +53,6 @@ export default {
       getMyTickets();
     })
     return {
-      route,
       events: computed(() => AppState.events),
       account: computed(() => AppState.account),
       myTickets: computed(() => AppState.myTickets)

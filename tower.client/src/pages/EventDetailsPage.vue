@@ -109,10 +109,6 @@ import { attendeesService } from "../services/AttendeesService.js"
 import { useRoute } from "vue-router";
 
 export default {
-  // props: {
-  //   event: { type: Object, required: true },
-  //   comment: { type: Object, required: true }
-  // },
 
   setup() {
     const editable = ref({});
