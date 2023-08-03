@@ -19,10 +19,12 @@ class TicketsService {
     await ticket.populate('profile event')
     return ticket
   }
+
   async getMyTickets(accountId) {
     const myTickets = await dbContext.Tickets.find({ accountId }).populate('event')
     return myTickets
   }
+
   async deleteTicket(ticketId, userId) {
     const ticket = await dbContext.Tickets.findById(ticketId)
 
@@ -37,6 +39,5 @@ class TicketsService {
     await event.save()
     return ticket
   }
-
 }
 export const ticketsService = new TicketsService();

@@ -11,6 +11,7 @@ class EventsService {
     const events = await dbContext.Events.find().populate('creator')
     return events
   }
+
   async getEventById(eventId) {
     const event = await dbContext.Events.findById(eventId)
     if (!event) throw new BadRequest(`No event by id: ${eventId}`)
@@ -44,4 +45,4 @@ class EventsService {
   }
 }
 
-export const eventsService = new EventsService
+export const eventsService = new EventsService();

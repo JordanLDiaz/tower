@@ -37,7 +37,13 @@ export default {
 <style lang="scss" scoped>
 .eventImg-card {
   border: 2pt solid #FFD464;
-  max-height: 32vh;
-  min-height: 32vh;
+  height: 40vh;
+}
+
+img {
+  height: 25vh;
+  min-width: auto;
+  background-size: contain;
+  background-position: center;
 }
 </style>

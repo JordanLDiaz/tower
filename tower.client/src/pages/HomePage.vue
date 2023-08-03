@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <!-- SECTION  Banner-->
     <section class="row mt-3 justify-content-center">
       <div class="col-12 text-center">
@@ -28,7 +28,6 @@
       </div>
     </section>
   </div>
-
 </template>
 
 <script>
@@ -70,6 +69,4 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

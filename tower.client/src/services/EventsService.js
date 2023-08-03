@@ -31,10 +31,8 @@ class EventsService {
 
   async archiveEvent(eventId) {
     const res = await api.delete(`api/events/${eventId}`)
-    logger.log('[ARCHIVING EVENT]')
+    logger.log('[ARCHIVING EVENT]', res.data)
     AppState.activeEvent.isCanceled = true
-    // AppState.events.push(res.data)
-    // return res.data
   }
 }
 
